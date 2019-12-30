@@ -71,7 +71,8 @@ for (int THREADS=0; THREADS<4; THREADS++) {
             cout << endl;
     } */
     
-    double start_stl = omp_get_wtime();		
+    double start_stl = omp_get_wtime();	
+    omp_set_num_threads(THREADS);
     // разделение данных по столбцам 
     double sum; 
     for(int i=0; i<n; i++) {  
@@ -94,9 +95,9 @@ for (int THREADS=0; THREADS<4; THREADS++) {
     }
     cout<<endl; */
     
-    double start_block = omp_get_wtime();	
+    double start_block = omp_get_wtime();
+    omp_set_num_threads(THREADS);	
     // блочное разделение данных 
-    omp_set_num_threads(4);
     omp_set_nested(true);
     #pragma omp parallel for
     for(int i=0; i<n; i++) {  
