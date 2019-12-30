@@ -13,7 +13,6 @@ int main() {
     int result_vector_stl[o];
     int result_vector_block[o];
     
-
     for(int i=0; i<n; i++) {  //заполняем и выводим матрицу А
         cout << endl;
         for(int k=0; k<o; k++) {
@@ -41,19 +40,20 @@ int main() {
     }
     cout << endl; 
     double end_posl = omp_get_wtime();
-    cout << "Время последовательного разделения данных:" << end_posl - start_posl << endl << endl;
+    cout << "Время последовательного разделения данных:"<< end_posl - start_posl << endl << endl;
 
     cout << "Последовательное решение:" << endl;
     for(int i=0; i<n; i++) {  
             cout<<result_vector_pos[i]<<" ";
             cout << endl;
-    }
+    } 
     
-
+for (int THREADS=0; THREADS<4; THREADS++) {
+    omp_set_num_threads(THREADS);
     double start_str = omp_get_wtime();
     // разделение данных по строкам 
     int i, j;  
-    #pragma omp paralell for private (j) 
+    #pragma omp paralell for private (j)
     for(int i=0; i<n; i++) {  
 	result_vector_str[i]=0;							
 	for(int j=0; j<o; j++) {
@@ -63,13 +63,13 @@ int main() {
     }
    cout << endl; 
    double end_str = omp_get_wtime();
-   cout << "Время разделения данных по строкам:" << end_str - start_str << endl << endl;
+   cout << "Время разделения данных по строкам для количества потоков " << THREADS+1 << ":" << end_str - start_str << endl << endl;
 
-   cout << "Разделение данных по строкам:" << endl;
+   /* cout << "Разделение данных по строкам:" << endl;
    for(int i=0; i<n; i++) {  //вывод результата для разделения данных по строкам
             cout<<result_vector_str[i]<<" ";
             cout << endl;
-    }
+    } */
     
     double start_stl = omp_get_wtime();		
     // разделение данных по столбцам 
@@ -85,14 +85,14 @@ int main() {
     }
    cout << endl; 
    double end_stl = omp_get_wtime();
-   cout << "Время разделения данных по столбцам:" << end_stl - start_stl << endl << endl;
+   cout << "Время разделения данных по столбцам для количества потоков " << THREADS+1 << ":" << end_stl - start_stl << endl << endl;
 
-   cout << "Разделение данных по столбцам:" << endl;
+   /* cout << "Разделение данных по столбцам:" << endl;
    for(int i=0; i<n; i++) {  //вывод результата для разделения данных по столбцам
             cout<<result_vector_stl[i]<<" ";
             cout << endl;
     }
-    cout<<endl;
+    cout<<endl; */
     
     double start_block = omp_get_wtime();	
     // блочное разделение данных 
@@ -110,13 +110,15 @@ int main() {
     }
    cout << endl; 
    double end_block = omp_get_wtime();
-   cout << "Время блочного разделения данных:" << end_block - start_block << endl << endl;
+   cout << "Время блочного разделения данных для количества потоков " << THREADS+1 << ":" << end_block - start_block << endl << endl;
 
-   cout << "Блочное разделение данных:" << endl;
+   /* cout << "Блочное разделение данных:" << endl;
    for(int i=0; i<n; i++) {  //вывод результата для блочного разделения данных
             cout<<result_vector_block[i]<<" ";
             cout << endl;
     }
-    cout<<endl;
+    cout<<endl; */
+    }
+
     return 0;
 }
