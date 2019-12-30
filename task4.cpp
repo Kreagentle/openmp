@@ -60,11 +60,11 @@ int main() {
     cout<<endl;
     cout<<endl;
 
-    
+for (int THREADS=0; THREADS<4; THREADS++) {
     double start_lent = omp_get_wtime();
     int i, j, k;
     omp_set_nested(true);
-    omp_set_num_threads (2); 
+    omp_set_num_threads(THREADS);
     #pragma omp parallel for private(j, k)
     for (int i = 0; i < n; i++) { // умножение матриц
         #pragma omp parallel for private (k)
@@ -78,23 +78,23 @@ int main() {
     }
     cout<<endl;
     double end_lent = omp_get_wtime();
-    cout << "Время при ленточном разделении данных:" << end_lent - start_lent << endl << endl;
+    cout << "Время при ленточном разделении данных для количества потоков " << THREADS+1 << ":" << end_lent - start_lent << endl << endl;
 
-    cout << "Ленточное разделение данных:" << endl;
+    /* cout << "Ленточное разделение данных:" << endl;
     for(int i=0; i<n; i++) {
         cout<<endl;
         for(int k=0; k<p; k++) {
             cout<<lent[i][k]<<" ";
             }
     }
-    cout<<endl;
+    cout<<endl; */
     cout<<endl;
     
 
     double start_block = omp_get_wtime();
     int gridsize = int (sqrt((double)3));
     int blocksize = p/gridsize;
-    omp_set_num_threads(3); 
+    omp_set_num_threads(THREADS); 
 #pragma omp parallel 
     {
     int id = omp_get_thread_num();
@@ -109,16 +109,17 @@ int main() {
     } 
     cout<<endl;
     double end_block = omp_get_wtime();
-    cout << "Время при блочном разделении данных:" << end_block - start_block << endl << endl;
+    cout << "Время при блочном разделении данных для количества потоков " << THREADS+1 << ":" << end_block - start_block << endl << endl;
 
-    cout << "Блочное разделение данных:" << endl;
+    /* cout << "Блочное разделение данных:" << endl;
     for(int i=0; i<n; i++) {
         cout<<endl;
         for(int k=0; k<p; k++) {
             cout<<block[i][k]<<" ";
             }
     }
+    cout<<endl; */
     cout<<endl;
-    cout<<endl;
+    }
     return 0;
 }
